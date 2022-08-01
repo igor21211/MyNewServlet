@@ -20,22 +20,28 @@ public class PutServlet extends HttpServlet {
         String sid = request.getParameter("id");
         int id = Integer.parseInt(sid);
 
-        String name = request.getParameter("name");
-        String email = request.getParameter("email");
+        try {
+            String name = request.getParameter("name");
+            String email = request.getParameter("email");
 
-        Employee employee = new Employee();
-        employee.setId(id);
-        employee.setName(name);
-        employee.setEmail(email);
-        employee.setCountry(request.getParameter("country"));
+            Employee employee = new Employee();
+            employee.setId(id);
+            employee.setName(name);
+            employee.setEmail(email);
+            employee.setCountry(request.getParameter("country"));
 
-        int status = EmployeeRepository.update(employee);
+            int status = EmployeeRepository.update(employee);
 
-        if (status > 0) {
-            response.sendRedirect("viewServlet");
-        } else {
-            out.println("Sorry! unable to update record");
+            if (status > 0) {
+                response.sendRedirect("viewServlet");
+            } else {
+                out.println("Sorry! unable to update record");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            out.close();
         }
-        out.close();
+
     }
 }

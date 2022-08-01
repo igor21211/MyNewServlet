@@ -23,20 +23,24 @@ public class LoginServlet extends HttpServlet {
         String userID = "admin";
         String password = "password";
 
-        if (userID.equals(user) && password.equals(pwd)) {
-            HttpSession session = request.getSession();
-            session.setAttribute("user", "user");
-            //setting session to expiry in 30 mins
-            session.setMaxInactiveInterval(30 * 60);
-            Cookie userName = new Cookie("user", user);
-            userName.setMaxAge(30 * 60);
-            response.addCookie(userName);
-            PrintWriter out = response.getWriter();
-            out.println("Welcome back to the team, " + user + "!");
-        } else {
-            PrintWriter out = response.getWriter();
-            out.println("Either user name or password is wrong!");
+        try {
+            if (userID.equals(user) && password.equals(pwd)) {
+                HttpSession session = request.getSession();
+                session.setAttribute("user", "user");
+                //setting session to expiry in 30 mins
+                session.setMaxInactiveInterval(30 * 60);
+                Cookie userName = new Cookie("user", user);
+                userName.setMaxAge(30 * 60);
+                response.addCookie(userName);
+                PrintWriter out = response.getWriter();
+                out.println("Welcome back to the team, " + user + "!");
+            } else {
+                PrintWriter out = response.getWriter();
+                out.println("Either user name or password is wrong!");
 
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 }

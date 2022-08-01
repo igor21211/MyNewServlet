@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import static java.lang.System.out;
+
 @WebServlet("/saveServlet")
 public class SaveServlet extends HttpServlet {
 
@@ -16,30 +18,36 @@ public class SaveServlet extends HttpServlet {
 
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
-
         PrintWriter out = response.getWriter();
+        try {
 
-        String name = request.getParameter("name");
-        String email = request.getParameter("email");
-        String country = request.getParameter("country");
 
-        Employee employee = new Employee();
+            String name = request.getParameter("name");
+            String email = request.getParameter("email");
+            String country = request.getParameter("country");
 
-        employee.setName(name);
-        employee.setEmail(email);
-        employee.setCountry(country);
+            Employee employee = new Employee();
 
-        //out.println(employee.toString());
-        //out.println(EmployeeRepository.getConnection());
+            employee.setName(name);
+            employee.setEmail(email);
+            employee.setCountry(country);
 
-        int status = EmployeeRepository.save(employee);
-        //out.println(status);
+            //out.println(employee.toString());
+            //out.println(EmployeeRepository.getConnection());
 
-        if (status > 0) {
-            out.print("Record saved successfully!");
-        } else {
-            out.println("Sorry! unable to save record");
+            int status = EmployeeRepository.save(employee);
+            //out.println(status);
+
+            if (status > 0) {
+                out.print("Record saved successfully!");
+            } else {
+                out.println("Sorry! unable to save record");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            out.close();
         }
-        out.close();
+
     }
 }
