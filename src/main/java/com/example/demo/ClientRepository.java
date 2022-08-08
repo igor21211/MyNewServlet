@@ -4,19 +4,6 @@ import java.sql.*;
 import java.util.Random;
 
 public class ClientRepository {
-
-//    public static void main(String[] args) {
-//        getConnection();
-//
-//        Client employee = new Client();
-//
-//        employee.setName("igor");
-//        employee.setCoffe("Americano");
-//        employee.setPrice(100);
-//
-//        save(employee);
-//    }
-
     public static Connection getConnection() {
 
         Connection connection = null;
