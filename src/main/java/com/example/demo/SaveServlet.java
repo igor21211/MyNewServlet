@@ -1,5 +1,8 @@
 package com.example.demo;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -7,8 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-
-import static java.lang.System.out;
 
 @WebServlet("/saveServlet")
 public class SaveServlet extends HttpServlet {
@@ -23,23 +24,29 @@ public class SaveServlet extends HttpServlet {
 
 
             String name = request.getParameter("name");
-            String email = request.getParameter("email");
-            String country = request.getParameter("country");
+            String coffe = request.getParameter("coffe");
+            int iniqid = ClientRepository.generateINQID();
+            int price = ClientRepository.getPriceForCoffe(coffe);
 
-            Employee employee = new Employee();
+            Client client = new Client();
 
-            employee.setName(name);
-            employee.setEmail(email);
-            employee.setCountry(country);
+
+            client.setName(name);
+            client.setCoffe(coffe);
+            client.setPrice(price);
+            client.setIniqid(iniqid);
+
 
             //out.println(employee.toString());
             //out.println(EmployeeRepository.getConnection());
 
-            int status = EmployeeRepository.save(employee);
+            int status = ClientRepository.save(client);
             //out.println(status);
+            ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+            String json = ow.writeValueAsString(client);
 
             if (status > 0) {
-                out.print("Record saved successfully!");
+                out.print(json);
             } else {
                 out.println("Sorry! unable to save record");
             }
