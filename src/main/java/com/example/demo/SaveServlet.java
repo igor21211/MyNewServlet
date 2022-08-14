@@ -2,6 +2,7 @@ package com.example.demo;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import lombok.SneakyThrows;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,14 +15,13 @@ import java.io.PrintWriter;
 @WebServlet("/saveServlet")
 public class SaveServlet extends HttpServlet {
 
+    @SneakyThrows
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
-        try {
-
 
             String name = request.getParameter("name");
             String coffe = request.getParameter("coffe");
@@ -50,11 +50,6 @@ public class SaveServlet extends HttpServlet {
             } else {
                 out.println("Sorry! unable to save record");
             }
-        }catch (Exception e){
-            e.printStackTrace();
-        }finally {
-            out.close();
-        }
 
     }
 }

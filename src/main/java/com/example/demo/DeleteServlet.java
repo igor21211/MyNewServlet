@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import lombok.SneakyThrows;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,22 +14,19 @@ import java.io.Writer;
 
 @WebServlet("/deleteServlet")
 public class DeleteServlet extends HttpServlet {
-
+    @SneakyThrows
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        try {
-            PrintWriter out = response.getWriter();
-            String sid = request.getParameter("order");
-            int iniqid = Integer.parseInt(sid);
-           int status =  ClientRepository.delete(iniqid);
+        PrintWriter out = response.getWriter();
+        String sid = request.getParameter("order");
+        int iniqid = Integer.parseInt(sid);
+        int status = ClientRepository.delete(iniqid);
 
-           if(status > 0){
-               out.println("Order is delete!");
-           }else{
-               out.println("Something wrong");
-           }
-        }catch (Exception e){
-            e.printStackTrace();
+        if (status > 0) {
+            out.println("Order is delete!");
+        } else {
+            out.println("Something wrong");
         }
+
     }
 }

@@ -2,6 +2,7 @@ package com.example.demo;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import lombok.SneakyThrows;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -13,6 +14,7 @@ import java.io.PrintWriter;
 public class updateServlet extends HttpServlet {
 
 
+    @SneakyThrows
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -25,7 +27,6 @@ public class updateServlet extends HttpServlet {
         int iniqid  = Integer.parseInt(order);
         int price = ClientRepository.getPriceForCoffe(coffe);
 
-        try {
             Client client = new Client();
             client.setCoffe(coffe);
             client.setIniqid(iniqid);
@@ -41,10 +42,6 @@ public class updateServlet extends HttpServlet {
             } else {
                 writer.println("Something Wrong!");
             }
-        }catch (Exception e){
-            e.printStackTrace();
-        }finally {
-            writer.close();
-        }
+
     }
 }

@@ -1,9 +1,17 @@
 package com.example.demo;
 
+import lombok.SneakyThrows;
+import lombok.extern.log4j.Log4j;
+import org.apache.log4j.xml.Log4jEntityResolver;
+import org.slf4j.*;
+import org.slf4j.spi.LoggingEventBuilder;
+
 import java.sql.*;
 import java.util.Random;
 
 public class ClientRepository {
+
+    private static final Logger log = LoggerFactory.getLogger(ClientRepository.class);
     public static Connection getConnection() {
 
         Connection connection = null;
@@ -44,87 +52,73 @@ public class ClientRepository {
         return inqid;
     }
 
-
+    @SneakyThrows
     public static int save(Client client) {
         int status = 0;
-        try {
-            Connection connection = ClientRepository.getConnection();
-            PreparedStatement ps = connection.prepareStatement("insert into client(name,coffe,price,iniqid) values (?,?,?,?)");
-            ps.setString(1, client.getName());
-            ps.setString(2, client.getCoffe());
-            ps.setInt(3, client.getPrice());
-            ps.setInt(4, client.getIniqid());
+        Connection connection = ClientRepository.getConnection();
+        PreparedStatement ps = connection.prepareStatement("insert into client(name,coffe,price,iniqid) values (?,?,?,?)");
+        ps.setString(1, client.getName());
+        ps.setString(2, client.getCoffe());
+        ps.setInt(3, client.getPrice());
+        ps.setInt(4, client.getIniqid());
 
+        status = ps.executeUpdate();
+        connection.close();
 
-            status = ps.executeUpdate();
-            connection.close();
+        log.info("Works method save and status: "+ status);
 
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
         return status;
     }
 
-
+    @SneakyThrows
     public static int delete(int iniqid) {
 
         int status = 0;
+        Connection connection = ClientRepository.getConnection();
+        PreparedStatement ps = connection.prepareStatement("delete from client where iniqid=?");
+        ps.setInt(1, iniqid);
+        status = ps.executeUpdate();
 
-        try {
-            Connection connection = ClientRepository.getConnection();
-            PreparedStatement ps = connection.prepareStatement("delete from client where iniqid=?");
-            ps.setInt(1, iniqid);
-            status = ps.executeUpdate();
-
-            connection.close();
-
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
+        connection.close();
+        log.info("Works method delete order and status: "+ status);
         return status;
     }
 
+    @SneakyThrows
     public static Client getOrder(int iniqid) {
         Client client = new Client();
-
-        try {
-            Connection connection = ClientRepository.getConnection();
-            PreparedStatement ps = connection.prepareStatement("select * from client where iniqid =?");
-            ps.setInt(1, iniqid);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                client.setId(rs.getInt(1));
-                client.setName(rs.getString(2));
-                client.setCoffe(rs.getString(3));
-                client.setPrice(rs.getInt(4));
-                client.setIniqid(rs.getInt(5));
-            }
-
-            connection.close();
-
-
-        } catch (SQLException exception) {
-            exception.printStackTrace();
+        Connection connection = ClientRepository.getConnection();
+        PreparedStatement ps = connection.prepareStatement("select * from client where iniqid =?");
+        ps.setInt(1, iniqid);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            client.setId(rs.getInt(1));
+            client.setName(rs.getString(2));
+            client.setCoffe(rs.getString(3));
+            client.setPrice(rs.getInt(4));
+            client.setIniqid(rs.getInt(5));
         }
+
+        log.info("Works method get order" + client);
+        connection.close();
+
         return client;
     }
 
-
+    @SneakyThrows
     public static int update(Client client) {
         int status = 0;
 
-        try {
-            Connection connection = ClientRepository.getConnection();
-            PreparedStatement ps = connection.prepareStatement("update client set coffe=?,price=? where iniqid=?");
-            ps.setString(1, client.getCoffe());
-            ps.setInt(2,client.getPrice());
-            ps.setInt(3, client.getIniqid());
 
-            status = ps.executeUpdate();
-            connection.close();
-        }catch (SQLException exception){
-            exception.printStackTrace();
-        }
+        Connection connection = ClientRepository.getConnection();
+        PreparedStatement ps = connection.prepareStatement("update client set coffe=?,price=? where iniqid=?");
+        ps.setString(1, client.getCoffe());
+        ps.setInt(2, client.getPrice());
+        ps.setInt(3, client.getIniqid());
+
+        status = ps.executeUpdate();
+        connection.close();
+        log.info("Works method update and status: " + status);
         return status;
     }
 }
