@@ -65,7 +65,7 @@ public class ClientRepository {
         status = ps.executeUpdate();
         connection.close();
 
-        log.info("Works method save and status: "+ status);
+        log.info("Works method save and status: "+ status );
 
         return status;
     }

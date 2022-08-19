@@ -5,10 +5,12 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import lombok.SneakyThrows;
+import org.slf4j.LoggerFactory;
 
 @WebServlet(name = "getServlet", value = "/getServlet")
 public class GetServlet extends HttpServlet {
@@ -17,6 +19,7 @@ public class GetServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+       var   log = LoggerFactory.getLogger(GetServlet.class);
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
@@ -24,6 +27,7 @@ public class GetServlet extends HttpServlet {
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 
         String sibiqid = request.getParameter("order");
+        log.info("Put parametr method: " + sibiqid);
         int iniqid = Integer.parseInt(sibiqid);
 
         Client client = ClientRepository.getOrder(iniqid);
