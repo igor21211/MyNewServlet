@@ -18,8 +18,8 @@ public class GetServlet extends HttpServlet {
     @SneakyThrows
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-       var   log = LoggerFactory.getLogger(GetServlet.class);
+        int status = 0;
+        var log = LoggerFactory.getLogger(GetServlet.class);
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
@@ -30,12 +30,18 @@ public class GetServlet extends HttpServlet {
         log.info("Put parametr method: " + sibiqid);
         int iniqid = Integer.parseInt(sibiqid);
 
+
+
         Client client = ClientRepository.getOrder(iniqid);
 
-        String json = ow.writeValueAsString(client);
-        out.println(json);
+        if(ClientRepository.checkOrder(iniqid )== 1){
+            out.println("sorry your account is deleted");
+        }else {
+            String json = ow.writeValueAsString(client);
+            out.println(json);
+        }
+
 
     }
-
 
 }

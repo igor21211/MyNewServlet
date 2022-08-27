@@ -15,7 +15,7 @@ import java.io.Writer;
 @WebServlet("/deleteServlet")
 public class DeleteServlet extends HttpServlet {
     @SneakyThrows
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         PrintWriter out = response.getWriter();
         String sid = request.getParameter("order");
